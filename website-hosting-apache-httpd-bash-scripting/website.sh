@@ -1,21 +1,30 @@
 #!/bin/bash
+############################################
+#Variables
+URL="https://www.tooplate.com/zip-templates/2134_gotto_job.zip"
+ARTIFACT="2134_gotto_job"
 
-############################################33
-#Installing dependencies 
+############################################
+# Installing dependencies
 sudo yum install wget unzip httpd -y
-mkdir -p /tmp/webfiles 
+
+# Create a temporary directory
+mkdir -p /tmp/webfiles
 cd /tmp/webfiles
 
+############################################
+# Start and enable httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
 
-#Start and enable httpd
-sudo systemctl start httpd && sudo systemctl enable httpd
+############################################
+# Setting up the website
+wget $URL
+unzip $ARTIFACT.zip
+sudo cp -R $ARTIFACT/* /var/www/html
 
-# Setting up a website
-wget https://www.tooplate.com/zip-templates/2134_gotto_job.zip
-unzip 2134_gotto_job.zip
-cp 2134_gotto_job/* /var/www/html
-
-#Restart apache httpd
+############################################
+# Restart apache httpd
 sudo systemctl restart httpd
 
-
+echo "Website hosted on Apache HTTP Server!"
